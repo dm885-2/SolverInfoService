@@ -1,11 +1,13 @@
-import river from "@ovcina/rapidriver";
-import {host, hasAccess} from "./helpers";
+import rapid from "@ovcina/rapidriver";
+import {host, getTokenData} from "./helpers.js";
 
 // Example
-river.subscribe(host, "ping", (msg, publish) => {
-    const isLoggedIn = hasAccess(msg.token);
+function ping(msg, publish){
+    const isLoggedIn = await getTokenData(msg.token);
 
     publish("pong", {
-        check: isLoggedIn
+        check: isLoggedIn ? true : false
     });
-});
+}
+
+rapid.subscribe(host, "ping", ping);
