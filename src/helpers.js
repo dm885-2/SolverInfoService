@@ -10,15 +10,5 @@ export const host = process.env.riverUrl ?? `amqp://localhost`;  // RabbitMQ url
  */
 export function getTokenData(token)
 {
-    return new Promise((resolve, reject) => {
-        jwt.verify(token, SECRET, (err, data) => {
-            if(err)
-            {
-                // reject(err);
-                resolve(false);
-            }else{
-                resolve(data);
-            }
-        })
-    });
+    return new Promise(resolve => jwt.verify(token, SECRET, (err, data) => resolve(err ? false : data)));
 }
