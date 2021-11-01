@@ -16,5 +16,7 @@ npm run test
 ```
 
 ## Enviroment variables
-**riverUrl** contains the URL to the RapidMQ server.
-**SECRET** contains the JWT secret.
+| Name     | Description                             |
+|----------|-----------------------------------------|
+| riverUrl | Contains the URL to the RapidMQ server. |
+| SECRET   | Contains the JWT secret.                |
