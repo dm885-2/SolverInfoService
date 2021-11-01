@@ -5,8 +5,8 @@
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "start": "node src/index.js"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules TESTING=1 npx jest",
+    "start": "cross-env RAPID=1 node src/index.js"
   },
   "repository": {
     "type": "git",
