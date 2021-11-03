@@ -10,7 +10,7 @@ export async function ping(msg, publish){
     });
 }
 
-if(process.env.RAPID === "1")
+if(process.env.RAPID)
 {
     rapid.subscribe(host, "ping", ping);
 }
