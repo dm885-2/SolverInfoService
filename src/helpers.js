@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import mysql from "mysql";
+
 
 const SECRET = process.env.SECRET ?? `3(?<,t2mZxj$5JT47naQFTXwqNWP#W>'*Kr!X!(_M3N.u8v}%N/JYGHC.Zwq.!v-`;  // JWT secret
 export const host = process.env.riverUrl ?? `amqp://localhost`;  // RabbitMQ url
@@ -11,4 +13,27 @@ export const host = process.env.riverUrl ?? `amqp://localhost`;  // RabbitMQ url
 export function getTokenData(token)
 {
     return new Promise(resolve => jwt.verify(token, SECRET, (err, data) => resolve(err ? false : data)));
+}
+
+let connection;
+if(process.env.mysqlHost)
+{
+    connection = mysql.createConnection({
+        host     : process.env.mysqlHost,
+        user     : process.env.mysqlUser,
+        password : process.env.mysqlPass,
+        database : 'db'
+    });
+    connection.connect();
+}
+
+/**
+ * Runs a SQL query on the DB. 
+ * @param string stmt 
+ * @param ?string[] WHERE 
+ * @returns 
+ */
+export function query(stmt, WHERE = [])
+{
+    return new Promise(r => connection.query(stmt, WHERE, (err, results) => r(results, err)));
 }
