@@ -31,9 +31,9 @@ if(process.env.mysqlHost)
  * Runs a SQL query on the DB. 
  * @param string stmt 
  * @param ?string[] WHERE 
- * @returns 
+ * @returns results[]|false
  */
 export function query(stmt, WHERE = [])
 {
-    return new Promise(r => connection.query(stmt, WHERE, (err, results) => r(results, err)));
+    return new Promise(r => connection.query(stmt, WHERE, (err, results) => r(err ? false : results)));
 }
