@@ -1,26 +1,28 @@
 {
-  "name": "microservice-template",
+  "name": "gateway",
   "version": "0.0.1",
   "description": "A template for a generic microservice",
+  "private": true,
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules TESTING=1 npx jest",
-    "start": "cross-env RAPID=1 node src/index.js"
+    "start-rapid": "cross-env RAPID=1 node src/index.js",
+    "start-express": "node ./bin/www"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DM885/Microservice-template.git"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/DM885/Microservice-template/issues"
-  },
-  "homepage": "https://github.com/DM885/Microservice-template#readme",
   "dependencies": {
     "@ovcina/rapidriver": "^1.3.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "^0.29.0",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "~1.9.1",
     "mysql": "^2.18.1"
   },
   "devDependencies": {
