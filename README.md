@@ -12,6 +12,11 @@ Start service (Starts `./src/index.js`)
 npm run start
 ```
 
+Debug service (Starts `./src/index.js`). It will automaticly restart the node proccess of file changes.
+```
+npm run debug
+```
+
 Run tests
 ```
 npm run test
