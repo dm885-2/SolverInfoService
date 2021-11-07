@@ -8,7 +8,8 @@
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules TESTING=1 npx jest",
     "start-rapid": "cross-env RAPID=1 node src/index.js",
-    "start-express": "node ./bin/www"
+    "start-express": "node ./bin/www",
+    "debug": "cross-env RAPID=1 nodemon src/index.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "jest": "^27.3.1"
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.14"
   }
 }
