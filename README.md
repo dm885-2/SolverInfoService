@@ -56,3 +56,5 @@ To pull new updates from the template repository, you can use
 ```sh
 git pull template
 ```
+
+
