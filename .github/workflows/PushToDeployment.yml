@@ -51,4 +51,4 @@ jobs:
         push: true
         ## instead of ronberg/test writete first the username and then the repositories name
         ## name/repositories:version
-        tags: ronberg/test:latest
+        tags: dm885/microservice-template:latest
