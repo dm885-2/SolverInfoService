@@ -7,10 +7,10 @@ export const host = process.env.riverUrl ?? `amqp://localhost`;  // RabbitMQ url
 
 /**
  * Returns the token payload if its valid, otherwise it returns false.
- * @param String token
+ * @param String token 
  * @returns Promise<false|TokenData>
  */
-export async function getTokenData(token)
+export function getTokenData(token)
 {
     return new Promise(resolve => jwt.verify(token, SECRET, (err, data) => resolve(err ? false : data)));
 }
@@ -28,11 +28,12 @@ if(process.env.mysqlHost)
 }
 
 /**
- * Runs a SQL query on the DB.
- * @param string stmt
- * @param ?string[] WHERE
+ * Runs a SQL query on the DB. 
+ * @param string stmt 
+ * @param ?string[] WHERE 
  * @returns results[]|false
  */
-export async function query(stmt, WHERE = []) {
+export function query(stmt, WHERE = [])
+{
     return new Promise(r => connection.query(stmt, WHERE, (err, results) => r(err ? false : results)));
 }
