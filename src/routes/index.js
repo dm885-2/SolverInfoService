@@ -1,13 +1,18 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
-router.get('/test', function (req, res, next) {
-  res.send('respond with a resource');
-});
+module.exports = function (rapidManager) {
+  /* GET home page. */
+  router.get('/', function (req, res, next) {
+    res.render('index', {title: 'Express'});
+  });
 
-module.exports = router;
+  router.post('/test/:river', function (req, response, next) {
+    rapidManager.publishAndWait('test', 10, req.body, result => {
+      response.send(`respond with a resource: ${result.content.toString()}`);
+    });
+  });
+
+  return router;
+};
