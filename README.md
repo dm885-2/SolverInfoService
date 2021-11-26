@@ -29,6 +29,7 @@ npm run test
 | riverUrl | Contains the URL to the RapidMQ server. |
 | SECRET   | Contains the JWT secret.                |
 | mysqlHost| Contains the mysql host.                |
+| mysqlDb  | Contains the mysql db.                  |
 | mysqlUser| Contains the mysql user.                |
 | mysqlPass| Contains the mysql pass.                |
 

@@ -16,13 +16,13 @@ export function getTokenData(token)
 }
 
 let connection;
-if(process.env.mysqlHost)
+if(process.env.mysqlDb)
 {
     connection = mysql.createConnection({
-        host     : process.env.mysqlHost,
-        user     : process.env.mysqlUser,
-        password : process.env.mysqlPass,
-        database : 'db'
+        host     : process.env.mysqlHost ?? 'localhost',
+        user     : process.env.mysqlUser ?? 'root',
+        password : process.env.mysqlPass ?? '',
+        database : process.env.mysqlDb ?? 'db',
     });
     connection.connect();
 }
