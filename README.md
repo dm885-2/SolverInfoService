@@ -24,14 +24,17 @@ npm run test
 ```
 
 ## Enviroment variables
-| Name     | Description                             |
-|----------|-----------------------------------------|
-| riverUrl | Contains the URL to the RapidMQ server. |
-| SECRET   | Contains the JWT secret.                |
-| mysqlHost| Contains the mysql host.                |
-| mysqlDb  | Contains the mysql db.                  |
-| mysqlUser| Contains the mysql user.                |
-| mysqlPass| Contains the mysql pass.                |
+| Name       | Description                    |
+|------------|--------------------------------|
+| rabbitUser | Contains the RabbitMQ username |
+| rabbitPass | Contains the RabbitMQ password |
+| rabbitHost | Contains the RabbitMQ hostname |
+| rabbitPort | Contains the RabbitMQ port     |
+| SECRET     | Contains the JWT secret        |
+| mysqlHost  | Contains the MySQL hostname    |
+| mysqlDb    | Contains the MySQL db name     |
+| mysqlUser  | Contains the MySQL username    |
+| mysqlPass  | Contains the MySQL password    |
 
 
 ## Create new microservice repository from this template
