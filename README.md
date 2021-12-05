@@ -23,20 +23,6 @@ Run tests
 npm run test
 ```
 
-## Enviroment variables
-| Name       | Description                    |
-|------------|--------------------------------|
-| rabbitUser | Contains the RabbitMQ username |
-| rabbitPass | Contains the RabbitMQ password |
-| rabbitHost | Contains the RabbitMQ hostname |
-| rabbitPort | Contains the RabbitMQ port     |
-| SECRET     | Contains the JWT secret        |
-| mysqlHost  | Contains the MySQL hostname    |
-| mysqlDb    | Contains the MySQL db name     |
-| mysqlUser  | Contains the MySQL username    |
-| mysqlPass  | Contains the MySQL password    |
-
-
 ## Create new microservice repository from this template
 Creating a repository for a new microservice starting from this template works as follows.  
 First create an empty repository in [our organisation](https://github.com/DM885).  
@@ -97,5 +83,15 @@ git checkout -b developer
 git push -u origin developer
 ```
 
-
-
+## Enviroment variables
+| Name       | Description                    |
+|------------|--------------------------------|
+| rabbitUser | Contains the RabbitMQ username |
+| rabbitPass | Contains the RabbitMQ password |
+| rabbitHost | Contains the RabbitMQ hostname |
+| rabbitPort | Contains the RabbitMQ port     |
+| SECRET     | Contains the JWT secret        |
+| mysqlHost  | Contains the MySQL hostname    |
+| mysqlDb    | Contains the MySQL db name     |
+| mysqlUser  | Contains the MySQL username    |
+| mysqlPass  | Contains the MySQL password    |
