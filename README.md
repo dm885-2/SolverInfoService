@@ -54,6 +54,9 @@ git remote rename origin template
 # Now add the remote of your newly created service repository
 git remote add origin git@github.com:DM885/<MyNewService>.git
 
+# Lastly, set the origin remote as the default one
+git branch --set-upstream-to origin/main
+
 # Done!
 ```
 
