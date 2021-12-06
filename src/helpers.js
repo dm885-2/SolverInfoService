@@ -29,7 +29,7 @@ export function subscriber(host, subscribers)
                 });
             };
 
-            subscriber(msg, wrapResponse(publish), wrapResponse(rapid.publish));
+            subscriber(msg, wrapResponse(publish), wrapResponse((data) => rapid.publish(host, data)));
         },
     })));
 }
