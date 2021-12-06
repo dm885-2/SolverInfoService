@@ -1,17 +1,16 @@
 import rapid from "@ovcina/rapidriver";
-import {host, getTokenData} from "./helpers.js";
+import {host, getTokenData, subscriber} from "./helpers.js";
 
 // Example
-export async function ping(msg){
+export async function ping(msg, publish, publishGlobal){
     const isLoggedIn = await getTokenData(msg.token);
 
-    rapid.publish(host, "pong", {
-        check: isLoggedIn ? true : false,
-        sessionID: msg.sessionID,
+    publishGlobal(host, "pong", {
+        check: isLoggedIn ? true : false
     });
 }
 
 if(process.env.RAPID)
 {
-    rapid.subscribe(host, [{river: "template", event: "ping", work: ping}]);
+    subscriber(host, [{river: "template", event: "ping", work: ping}]);
 }

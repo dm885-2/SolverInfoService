@@ -1,3 +1,4 @@
+import rapid from "@ovcina/rapidriver";
 import jwt from "jsonwebtoken";
 import mysql from "mysql";
 
@@ -6,6 +7,29 @@ const SECRET = process.env.SECRET ?? `3(?<,t2mZxj$5JT47naQFTXwqNWP#W>'*Kr!X!(_M3
 const rabbitUser = process.env.rabbitUser ?? "guest";
 const rabbitPass = process.env.rabbitPass ?? "guest";
 export const host = "amqp://" + rabbitUser + ":" + rabbitPass + "@" + (process.env.rabbitHost ?? `localhost`);  // RabbitMQ url
+
+export function subscriber(host, subscribers)
+{
+    rapid.subscribe(host, subscribers.map(subscriber => ({
+        river: subscriber.river,
+        event: subscriber.event,
+        work: (msg, publish) => {
+            const wrapResponse = (func) => {
+                let logPath = msg.logPath ?? [];
+                logPath.push({river, event});
+
+                return data => func({
+                    ...data,
+                    sessionId: msg.sessionId,
+                    requestId: msg.requestId,
+                    logPath
+                });
+            };
+
+            subscriber(msg, wrapResponse(publish), wrapResponse(rapid.publish));
+        },
+    })));
+}
 
 /**
  * Returns the token payload if its valid, otherwise it returns false.
