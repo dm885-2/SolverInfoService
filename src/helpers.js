@@ -8,6 +8,11 @@ const rabbitUser = process.env.rabbitUser ?? "guest";
 const rabbitPass = process.env.rabbitPass ?? "guest";
 export const host = "amqp://" + rabbitUser + ":" + rabbitPass + "@" + (process.env.rabbitHost ?? `localhost`);  // RabbitMQ url
 
+/**
+ * Automatically adds logging, request and sessionIDs to rabbit responses.
+ * @param stromg host 
+ * @param [] subscribers 
+ */
 export function subscriber(host, subscribers)
 {
     rapid.subscribe(host, subscribers.map(subscriber => ({
