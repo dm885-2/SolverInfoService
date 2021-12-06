@@ -13,33 +13,30 @@ export const host = "amqp://" + rabbitUser + ":" + rabbitPass + "@" + (process.e
  * @param stromg host 
  * @param [] subscribers 
  */
-export function subscriber(host, subscribers)
-{
-    rapid.subscribe(host, subscribers.map(subscriber => ({
-        river: subscriber.river,
-        event: subscriber.event,
-        work: (msg, publish) => {
-            const wrapResponse = (func) => {
-                let logPath = msg.logPath ?? [];
-                logPath.push({
-                    river: subscriber.river, 
-                    event: subscriber.event
-                });
-
-                return data => func({
+ export function subscriber(host, subscribers)
+ {
+     rapid.subscribe(host, subscribers.map(subscriber => ({
+         river: subscriber.river,
+         event: subscriber.event,
+         work: (msg, publish) => {
+             const wrapResponse = (func) => {
+                 let logPath = msg.logPath ?? [];
+                 logPath.push({
+                     river: subscriber.river, 
+                     event: subscriber.event
+                 });
+ 
+                 return (event, data) => func(event, {
                     ...data,
                     sessionId: msg.sessionId,
                     requestId: msg.requestId,
                     logPath
                 });
-            };
-
-            subscriber(msg, wrapResponse(publish), (host, event, data) => {
-                const fixData = wrapResponse(d => d);
-                rapid.publish(host, event, fixData(data));
-            });
-        },
-    })));
+             };
+             
+             subscriber.work(msg, wrapResponse(publish));
+         },
+     })));
 }
 
 /**
