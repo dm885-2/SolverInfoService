@@ -16,7 +16,10 @@ export function subscriber(host, subscribers)
         work: (msg, publish) => {
             const wrapResponse = (func) => {
                 let logPath = msg.logPath ?? [];
-                logPath.push({river, event});
+                logPath.push({
+                    river: subscriber.river, 
+                    event: subscriber.event
+                });
 
                 return data => func({
                     ...data,
