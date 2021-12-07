@@ -19,22 +19,21 @@ export const host = "amqp://" + rabbitUser + ":" + rabbitPass + "@" + (process.e
          river: subscriber.river,
          event: subscriber.event,
          work: (msg, publish) => {
-             const wrapResponse = (func) => {
-                 let logPath = msg.logPath ?? [];
-                 logPath.push({
-                     river: subscriber.river, 
-                     event: subscriber.event
-                 });
- 
-                 return (event, data) => func(event, {
+             const wrappedPublish = (event, data) => {
+                let logPath = msg.logPath ?? [];
+                logPath.push({
+                    river: subscriber.river, 
+                    event: subscriber.event
+                });
+
+                publish(event, {
                     ...data,
                     sessionId: msg.sessionId,
                     requestId: msg.requestId,
                     logPath
                 });
              };
-             
-             subscriber.work(msg, wrapResponse(publish));
+             subscriber.work(msg, wrappedPublish);
          },
      })));
 }
