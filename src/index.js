@@ -5,7 +5,7 @@ import {host, getTokenData, subscriber} from "./helpers.js";
 export async function ping(msg, publish, publishGlobal){
     const isLoggedIn = await getTokenData(msg.token);
 
-    publishGlobal(host, "pong", {
+    publish("pong", {
         check: isLoggedIn ? true : false
     });
 }
