@@ -30,7 +30,7 @@ spec:
             secretKeyRef:
               name: mysql-secrets
               key: mysql-root-password
-        - name: mysqlDb:
+        - name: mysqlDb
           value: "db"
         - name: rabbitUrl
           value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
