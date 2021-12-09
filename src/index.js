@@ -10,6 +10,22 @@ export async function listSolvers(msg, publish) {
   })
 }
 
+export async function addSolver(msg, publish) {
+  const stmt = await query('INSERT INTO `solvers` (`name`, `docker_image`) VALUES (?, ?)', [
+    msg.name,
+    msg.docker_image
+  ]);
+
+  publish('add-solver-response', {
+    error: !stmt,
+    sessionId: msg.sessionId,
+    requestId: msg.requestId
+  });
+}
+
 if (process.env.RAPID) {
-  subscriber(host, [{river: 'solvers', event: 'list-solvers', work: listSolvers}]);
+  subscriber(host, [
+    {river: 'solvers', event: 'list-solvers', work: listSolvers},
+    {river: 'solvers', event: 'add-solver', work: addSolver}
+  ]);
 }
