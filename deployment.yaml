@@ -25,7 +25,7 @@ spec:
           value: "mysql.default.svc.cluster.local"
         - name: mysqlUser
           value: "root"
-        - name: mysql
+        - name: mysqlPass
           valueFrom:
             secretKeyRef:
               name: mysql-secrets
