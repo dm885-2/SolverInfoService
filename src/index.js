@@ -23,9 +23,22 @@ export async function addSolver(msg, publish) {
   });
 }
 
+export async function deleteSolver(msg, publish) {
+  const stmt = await query('DELETE FROM `solvers` WHERE `id` = ?', [
+    msg.solverId
+  ]);
+
+  publish('delete-solver-response', {
+    error: !stmt,
+    sessionId: msg.sessionId,
+    requestId: msg.requestId
+  });
+}
+
 if (process.env.RAPID) {
   subscriber(host, [
     {river: 'solvers', event: 'list-solvers', work: listSolvers},
-    {river: 'solvers', event: 'add-solver', work: addSolver}
+    {river: 'solvers', event: 'add-solver', work: addSolver},
+    {river: 'solvers', event: 'delete-solver', work: deleteSolver}
   ]);
 }
