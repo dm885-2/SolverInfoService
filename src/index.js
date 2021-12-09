@@ -35,10 +35,25 @@ export async function deleteSolver(msg, publish) {
   });
 }
 
+export async function updateSolver(msg, publish) {
+  const stmt = await query('UPDATE `solvers` SET `name` = ?, `docker_image` = ?  WHERE `id` = ?', [
+    msg.name,
+    msg.docker_image,
+    msg.solverId
+  ]);
+
+  publish('update-solver-response', {
+    error: !stmt,
+    sessionId: msg.sessionId,
+    requestId: msg.requestId
+  });
+}
+
 if (process.env.RAPID) {
   subscriber(host, [
     {river: 'solvers', event: 'list-solvers', work: listSolvers},
     {river: 'solvers', event: 'add-solver', work: addSolver},
-    {river: 'solvers', event: 'delete-solver', work: deleteSolver}
+    {river: 'solvers', event: 'delete-solver', work: deleteSolver},
+    {river: 'solvers', event: 'update-solver', work: updateSolver}
   ]);
 }
