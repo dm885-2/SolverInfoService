@@ -32,7 +32,7 @@ spec:
               key: mysql-root-password
         - name: mysqlDb
           value: "db"
-        - name: rabbitUrl
+        - name: rabbitHost
           value: "rabbitmq-0.rabbitmq.rabbits.svc.cluster.local"
         - name: rabbitPort
           value: "5672"
