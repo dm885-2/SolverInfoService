@@ -1,15 +1,15 @@
-import {host, getTokenData, subscriber} from "./helpers.js";
+import {host, query, subscriber} from './helpers.js';
 
-// Example
-export async function ping(msg, publish){
-    const isLoggedIn = await getTokenData(msg.token);
+export async function listSolvers(msg, publish) {
+  const solvers = await query('SELECT * FROM `solvers`;');
 
-    publish("pong", {
-        check: isLoggedIn ? true : false
-    });
+  publish('list-solvers-response', {
+    solvers: solvers,
+    sessionId: msg.sessionId,
+    requestId: msg.requestId
+  })
 }
 
-if(process.env.RAPID)
-{
-    subscriber(host, [{river: "template", event: "ping", work: ping}]);
+if (process.env.RAPID) {
+  subscriber(host, [{river: 'solvers', event: 'list-solvers', work: listSolvers}]);
 }
