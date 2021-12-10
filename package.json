@@ -1,7 +1,7 @@
 {
-  "name": "solver-service",
+  "name": "solver-info-service",
   "version": "0.0.1",
-  "description": "A template for a generic microservice",
+  "description": "The solver info microservice",
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DM885/Microservice-template.git"
+    "url": "git+https://github.com/DM885/SolverInfoService.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DM885/Microservice-template/issues"
+    "url": "https://github.com/DM885/SolverInfoService/issues"
   },
-  "homepage": "https://github.com/DM885/Microservice-template#readme",
+  "homepage": "https://github.com/DM885/SolverInfoService#readme",
   "dependencies": {
     "@ovcina/rapidriver": "^2.0.7",
     "jsonwebtoken": "^8.5.1",

@@ -51,9 +51,9 @@ export async function updateSolver(msg, publish) {
 
 if (process.env.RAPID) {
   subscriber(host, [
-    {river: 'solvers', event: 'list-solvers', work: listSolvers},
-    {river: 'solvers', event: 'add-solver', work: addSolver},
-    {river: 'solvers', event: 'delete-solver', work: deleteSolver},
-    {river: 'solvers', event: 'update-solver', work: updateSolver}
+    {river: 'solver-info', event: 'list-solvers', work: listSolvers},
+    {river: 'solver-info', event: 'add-solver', work: addSolver},
+    {river: 'solver-info', event: 'delete-solver', work: deleteSolver},
+    {river: 'solver-info', event: 'update-solver', work: updateSolver}
   ]);
 }
