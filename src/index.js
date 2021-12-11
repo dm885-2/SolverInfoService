@@ -11,15 +11,15 @@ export async function listSolvers(msg, publish) {
 }
 
 export async function addSolver(msg, publish) {
-  const solvers = await query('SELECT `id` FROM `solvers` WHERE `name` = ? AND `docker_image` = ? AND `deleted` = ?;', [
-    msg.name,
+  const solvers = await query('SELECT `id` FROM `solvers` WHERE `docker_image` = ? AND `deleted` = ?;', [
     msg.docker_image,
     true
   ]);
 
   if (solvers && solvers.length > 0) {
     // There already exists such a solver which was deleted before. Revive this one.
-    const stmt = await query('UPDATE `solvers` SET `deleted` = 0 WHERE `id` = ?', [
+    const stmt = await query('UPDATE `solvers` SET `deleted` = 0, `name` = ? WHERE `id` = ?', [
+      msg.name,
       solvers[0].id
     ]);
 
