@@ -1,7 +1,7 @@
 import {host, query, subscriber} from './helpers.js';
 
 export async function listSolvers(msg, publish) {
-  const solvers = await query('SELECT * FROM `solvers`;');
+  const solvers = await query('SELECT * FROM `solvers` WHERE `deleted` = ?;', [false]);
 
   publish('list-solvers-response', {
     solvers: solvers,
@@ -11,20 +11,42 @@ export async function listSolvers(msg, publish) {
 }
 
 export async function addSolver(msg, publish) {
-  const stmt = await query('INSERT INTO `solvers` (`name`, `docker_image`) VALUES (?, ?)', [
+  const solvers = await query('SELECT `id` FROM `solvers` WHERE `name` = ? AND `docker_image` = ? AND `deleted` = ?;', [
     msg.name,
-    msg.docker_image
+    msg.docker_image,
+    true
   ]);
 
-  publish('add-solver-response', {
-    error: !stmt,
-    sessionId: msg.sessionId,
-    requestId: msg.requestId
-  });
+  if (solvers && solvers.length > 0) {
+    // There already exists such a solver which was deleted before. Revive this one.
+    const stmt = await query('UPDATE `solvers` SET `deleted` = 0 WHERE `id` = ?', [
+      solvers[0].id
+    ]);
+
+    publish('add-solver-response', {
+      error: !stmt,
+      sessionId: msg.sessionId,
+      requestId: msg.requestId
+    });
+  } else {
+    // We cannot reuse a previously disabled solver, so create a new one.
+    // TODO: spin up a new solver in Kubernetes
+    const stmt = await query('INSERT INTO `solvers` (`name`, `docker_image`, `deleted`) VALUES (?, ?, ?)', [
+      msg.name,
+      msg.docker_image,
+      false
+    ]);
+
+    publish('add-solver-response', {
+      error: !stmt,
+      sessionId: msg.sessionId,
+      requestId: msg.requestId
+    });
+  }
 }
 
 export async function deleteSolver(msg, publish) {
-  const stmt = await query('DELETE FROM `solvers` WHERE `id` = ?', [
+  const stmt = await query('UPDATE `solvers` SET `deleted` = 1 WHERE `id` = ?', [
     msg.solverId
   ]);
 
