@@ -1,7 +1,7 @@
-import {host, query, subscriber} from './helpers.js';
+import helpers from './helpers.js';
 
 export async function listSolvers(msg, publish) {
-  const solvers = await query('SELECT * FROM `solvers` WHERE `deleted` = ?;', [false]);
+  const solvers = await helpers.query('SELECT * FROM `solvers` WHERE `deleted` = ?;', [false]);
 
   publish('list-solvers-response', {
     solvers: solvers,
@@ -11,14 +11,14 @@ export async function listSolvers(msg, publish) {
 }
 
 export async function addSolver(msg, publish) {
-  const solvers = await query('SELECT `id` FROM `solvers` WHERE `docker_image` = ? AND `deleted` = ?;', [
+  const solvers = await helpers.query('SELECT `id` FROM `solvers` WHERE `docker_image` = ? AND `deleted` = ?;', [
     msg.docker_image,
     true
   ]);
 
   if (solvers && solvers.length > 0) {
     // There already exists such a solver which was deleted before. Revive this one.
-    const stmt = await query('UPDATE `solvers` SET `deleted` = 0, `name` = ? WHERE `id` = ?', [
+    const stmt = await helpers.query('UPDATE `solvers` SET `deleted` = 0, `name` = ? WHERE `id` = ?', [
       msg.name,
       solvers[0].id
     ]);
@@ -31,7 +31,7 @@ export async function addSolver(msg, publish) {
   } else {
     // We cannot reuse a previously disabled solver, so create a new one.
     // TODO: spin up a new solver in Kubernetes
-    const stmt = await query('INSERT INTO `solvers` (`name`, `docker_image`, `deleted`) VALUES (?, ?, ?)', [
+    const stmt = await helpers.query('INSERT INTO `solvers` (`name`, `docker_image`, `deleted`) VALUES (?, ?, ?)', [
       msg.name,
       msg.docker_image,
       false
@@ -46,7 +46,7 @@ export async function addSolver(msg, publish) {
 }
 
 export async function deleteSolver(msg, publish) {
-  const stmt = await query('UPDATE `solvers` SET `deleted` = 1 WHERE `id` = ?', [
+  const stmt = await helpers.query('UPDATE `solvers` SET `deleted` = 1 WHERE `id` = ?', [
     msg.solverId
   ]);
 
@@ -58,7 +58,7 @@ export async function deleteSolver(msg, publish) {
 }
 
 export async function updateSolver(msg, publish) {
-  const stmt = await query('UPDATE `solvers` SET `name` = ?, `docker_image` = ?  WHERE `id` = ?', [
+  const stmt = await helpers.query('UPDATE `solvers` SET `name` = ?, `docker_image` = ?  WHERE `id` = ?', [
     msg.name,
     msg.docker_image,
     msg.solverId
@@ -72,7 +72,7 @@ export async function updateSolver(msg, publish) {
 }
 
 if (process.env.RAPID) {
-  subscriber(host, [
+  helpers.subscriber(helpers.host, [
     {river: 'solver-info', event: 'list-solvers', work: listSolvers},
     {river: 'solver-info', event: 'add-solver', work: addSolver},
     {river: 'solver-info', event: 'delete-solver', work: deleteSolver},
