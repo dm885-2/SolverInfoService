@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: <service-name>          # CHANGE THIS TO YOUR SERVICE NAME
-        image: dm885/<image>          # CHANGE THIS TO YOUR DOCKER IMAGE
+        image: dm885/<service-name>   # CHANGE THIS TO YOUR SERVICE NAME
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
