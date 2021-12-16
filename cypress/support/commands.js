@@ -22,3 +22,59 @@
 //
 //
 // -- This will overwrite an existing command --
+Cypress.Commands.add('register', (userName, password, rank) => {
+  cy.request({
+    method: 'POST',
+    url: '/auth/register',
+    retryOnStatusCodeFailure: true,
+    retryOnNetworkFailure: true,
+    body: {
+      'username': userName,
+      'password': password,
+      'passwordRepeat': password,
+      'rank': rank
+    }
+  })
+    .as('registerResponse')
+    .then((response) => {
+      return response;
+    })
+    .its('status')
+    .should('eq', 200);
+});
+
+Cypress.Commands.add('login', (username, password) => {
+  cy.request({
+    method: 'POST',
+    url: '/auth/login',
+    body: {
+      username: username,
+      password: password
+    }
+  })
+    .as('loginResponse')
+    .then((response) => {
+      Cypress.env('rtoken', response.body.refreshToken); // either this or some global var but remember that this will only work in one test case
+      return response;
+    })
+    .its('status')
+    .should('eq', 200);
+});
+
+Cypress.Commands.add('getAccessToken', () => {
+  const token = Cypress.env('rtoken');
+  cy.request({
+    method: 'POST',
+    url: '/auth/accessToken',
+    body: {
+      refreshToken: token
+    }
+  })
+    .as('accessTokenResponse')
+    .then((response) => {
+      Cypress.env('token', response.body.accessToken); // either this or some global var but remember that this will only work in one test case
+      return response;
+    })
+    .its('status')
+    .should('eq', 200);
+});
