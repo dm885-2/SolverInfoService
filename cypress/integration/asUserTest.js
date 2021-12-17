@@ -5,7 +5,7 @@ describe('SolverInfoService as User', () => {
     const pass = 'p' + Date.now();
     cy.register(uname, pass, 0);
     cy.login(uname, pass);
-    cy.getAccessToken();
+    cy.getAT();
   });
 
   it('should be able to list the solvers.', () => {

@@ -22,7 +22,7 @@
 //
 //
 // -- This will overwrite an existing command --
-Cypress.Commands.add('register', (userName, password) => {
+Cypress.Commands.add('register', (userName, password, rank) => {
   cy.request({
     method: 'POST',
     url: '/auth/register',
@@ -31,7 +31,8 @@ Cypress.Commands.add('register', (userName, password) => {
     body: {
       'username': userName,
       'password': password,
-      'passwordRepeat': password
+      'passwordRepeat': password,
+      'rank': rank
     }
   })
     .as('registerResponse')
@@ -60,7 +61,7 @@ Cypress.Commands.add('login', (userName, password) => {
     .should('eq', 200);
 });
 
-Cypress.Commands.add('getAccessToken', () => {
+Cypress.Commands.add('getAT', () => {
   const token = Cypress.env('rtoken');
   cy.request({
     method: 'POST',
