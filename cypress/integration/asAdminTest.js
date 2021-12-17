@@ -1,9 +1,4 @@
-describe('SolverInfoService as Admin',{
-  retries: {
-    runMode: 4,
-    openMode: 1,
-  } 
-}, () => {
+describe('SolverInfoService as Admin', () => {
 
   beforeEach(() => {
     cy.loginAsAdmin();
