@@ -23,7 +23,7 @@
 //
 // -- This will overwrite an existing command --
 Cypress.Commands.add('register', (userName, password, rank) => {
-  cy.visit({
+  cy.request({
       method:'POST', 
       url:'/auth/register',
       body: {
@@ -42,7 +42,7 @@ Cypress.Commands.add('register', (userName, password, rank) => {
 })
 
 Cypress.Commands.add('login', (userName, password) => {
-  cy.visit({
+  cy.request({
       method:'POST', 
       url:'/auth/login',
       body: {
@@ -61,7 +61,7 @@ Cypress.Commands.add('login', (userName, password) => {
 
 Cypress.Commands.add('getAT', () => {
   const token = Cypress.env('rtoken');
-  cy.visit({
+  cy.request({
       method:'POST', 
       url:'/auth/accessToken',
       body: {
@@ -79,7 +79,7 @@ Cypress.Commands.add('getAT', () => {
 
 Cypress.Commands.add("deleteAllSolvers", () => {
     const token = Cypress.env('token');
-    cy.visit({
+    cy.request({
       method: 'GET',
       url: '/solvers',
       headers: {
@@ -90,7 +90,7 @@ Cypress.Commands.add("deleteAllSolvers", () => {
     .as('deleteResponse')
     .then(response => {
       response.body.forEach(solver => {
-        cy.visit({
+        cy.request({
           method: 'DELETE',
           url: `/solvers/${solver.id}`,
           headers: {
