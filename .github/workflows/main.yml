@@ -99,7 +99,7 @@ jobs:
         kubectl get pods 
         kubectl -n ${{ env.NAMESPACE }} get pods
         kubectl -n ${{ env.NAMESPACE }} get svc
-        kubectl exec -it pods/mysql-0 -- mysql -u root -ppassword123 -e 'SHOW TABLES FROM ${{secrets.DOCKERHUB_USERNAME}};'
+        kubectl exec -it pods/mysql-0 -- mysql -u root -ppassword123 -e 'SHOW TABLES FROM db;'
     - name: Port Forward
       run: kubectl -n ${{ env.NAMESPACE }} port-forward svc/gateway 3000:80 & pid=$!
     - run: npm ci
