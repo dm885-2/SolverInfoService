@@ -1,71 +1,40 @@
-describe('SolverInfoService as Admin', {
-  retries: {
-    runMode: 4,
-    openMode: 1,
-  }
-}, () => {
-
-  before(() => {
-    const uname = 'u' + Date.now();
-    const pass = 'p' + Date.now();
-    cy.register(uname, pass, 1);
-    cy.login(uname, pass);
-    cy.waitUntil(() => cy.getCookie('rtoken'));
-    cy.getAT();
-    cy.waitUntil(() => cy.getCookie('token'));
-  });
+describe('SolverInfoService as Admin', () => {
 
   beforeEach(() => {
-    cy.request({
-      method: 'GET',
-      url: '/solvers',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Cypress.env('token')
-      },
-    })
-    .as('deleteResponse')
-    .then(response => {
-      response.body.forEach(solver => {
-        cy.request({
-          method: 'DELETE',
-          url: `/solvers/${solver.id}`,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + Cypress.env('token')
-          }
-        })
-      });
-    })
-    .its('status')
-    .should('eq', 200);
+    const uname = 'u' + Date.now();
+    const pass = 'p' + Date.now();
+    cy.register(uname, pass, 0);
+    cy.login(uname, pass);
+    cy.getAT();
+
+    cy.deleteAll();
   });
 
-  after(() => {
-    cy.request({
-      method: 'GET',
-      url: '/solvers',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Cypress.env('token')
-      },
-    })
-    .as('deleteResponse')
-    .then(response => {
-      response.body.forEach(solver => {
-        cy.request({
-          method: 'DELETE',
-          url: `/solvers/${solver.id}`,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + Cypress.env('token')
-          }
-        })
-      });
-    })
-    .its('status')
-    .should('eq', 200);
-  });
+  // after(() => {
+  //   cy.request({
+  //     method: 'GET',
+  //     url: '/solvers',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer ' + Cypress.env('token')
+  //     },
+  //   })
+  //   .as('deleteResponse')
+  //   .then(response => {
+  //     response.body.forEach(solver => {
+  //       cy.request({
+  //         method: 'DELETE',
+  //         url: `/solvers/${solver.id}`,
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': 'Bearer ' + Cypress.env('token')
+  //         }
+  //       })
+  //     });
+  //   })
+  //   .its('status')
+  //   .should('eq', 200);
+  // });
 
   it('should return empty list when getting solvers while no solvers were added.', () => {
     cy.request({

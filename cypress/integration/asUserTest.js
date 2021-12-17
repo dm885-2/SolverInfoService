@@ -1,9 +1,4 @@
-describe('SolverInfoService as User', {
-  retries: {
-    runMode: 4,
-    openMode: 1,
-  }
-}, () => {
+describe('SolverInfoService as User', () => {
 
   before(() => {
     const uname = 'u' + Date.now();
