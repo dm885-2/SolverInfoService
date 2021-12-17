@@ -100,6 +100,7 @@ jobs:
         kubectl -n ${{ env.NAMESPACE }} get pods
         kubectl -n ${{ env.NAMESPACE }} get svc
         kubectl exec -it pods/mysql-0 -- mysql -u root -ppassword123 -e 'SHOW TABLES FROM db;'
+        kubectl exec -it pods/mysql-0 -- mysql -u root -ppassword123 -e 'SHOW TABLES FROM dm885;'
         kubectl exec -it pods/mysql-0 -- mysql -u root -ppassword123 -e 'SHOW DATABASES;'
     - name: Port Forward
       run: kubectl -n ${{ env.NAMESPACE }} port-forward svc/gateway 3000:80 & pid=$!
