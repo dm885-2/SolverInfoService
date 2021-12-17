@@ -3,9 +3,9 @@ describe('SolverInfoService as Admin', () => {
   before(() => {
     const uname = 'u' + Date.now();
     const pass = 'p' + Date.now();
-    cy.register(uname, pass, 1);
-    cy.login(uname, pass);
-    cy.getAT();
+    cy.waitUntil(()=> cy.register(uname, pass, 1));
+    cy.waitUntil(()=> cy.login(uname, pass));
+    cy.waitUntil(()=> cy.getAT());
   });
 
   beforeEach(() => {
