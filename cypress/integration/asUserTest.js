@@ -1,10 +1,7 @@
 describe('SolverInfoService as User', () => {
 
   before(() => {
-    const uname = 'u' + Date.now();
-    const pass = 'p' + Date.now();
-    cy.register(uname, pass, 0);
-    cy.login(uname, pass);
+    cy.loginAsUser();
     cy.getAT();
   });
 

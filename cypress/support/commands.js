@@ -22,33 +22,13 @@
 //
 //
 // -- This will overwrite an existing command --
-
-Cypress.Commands.add('register', (userName, password, rank) => {
-  cy.request({
-      method:'POST', 
-      url:'/auth/register',
-      body: {
-          "username": userName,
-          "password": password,
-          "passwordRepeat": password,
-          "rank" : rank ?? 0
-      }
-      })
-      .as('registerResponse')
-      .then((response) => {
-          return response;
-      })
-      .its('status')
-      .should('eq', 200);
-})
-
-Cypress.Commands.add('login', (userName, password) => {
+Cypress.Commands.add('loginAsUser', () => {
   cy.request({
       method:'POST', 
       url:'/auth/login',
       body: {
-        username: userName,
-        password: password
+        username: "user",
+        password: "user_supersecure"
       }
     })
     .as('loginResponse')
@@ -60,25 +40,43 @@ Cypress.Commands.add('login', (userName, password) => {
     .should('eq', 200);
 })
 
-Cypress.Commands.add('getAT', () => {
-  const token = Cypress.env('rtoken');
-  cy.request({
-      method:'POST', 
-      url:'/auth/accessToken',
-      body: {
-        refreshToken : token
-      }
-    })
-    .as('atResponse')
-    .then((response) => {
-      Cypress.env('token', response.body.accessToken);
-      return response;
-    })
-    .its('status')
-    .should('eq', 200);
+Cypress.Commands.add('loginAsAdmin', () => {
+cy.request({
+    method:'POST', 
+    url:'/auth/login',
+    body: {
+      username: "admin",
+      password: "admin_supersecure"
+    }
+  })
+  .as('loginResponse')
+  .then((response) => {
+    Cypress.env('rtoken', response.body.refreshToken); 
+    return response;
+  })
+  .its('status')
+  .should('eq', 200);
 })
 
-Cypress.Commands.add('deleteAll', ()=> {
+Cypress.Commands.add('getAT', () => {
+const token = Cypress.env('rtoken');
+cy.request({
+    method:'POST', 
+    url:'/auth/accessToken',
+    body: {
+      refreshToken : token
+    }
+  })
+  .as('atResponse')
+  .then((response) => {
+    Cypress.env('token', response.body.accessToken);
+    return response;
+  })
+  .its('status')
+  .should('eq', 200);
+})
+
+Cypress.Commands.add('getAll', ()=> {
     const token = Cypress.env('token');
     cy.request({
       method: 'GET',
@@ -88,21 +86,31 @@ Cypress.Commands.add('deleteAll', ()=> {
         'Authorization': 'Bearer ' + token
       },
     })
-    .as('deleteResponse')
+    .as('getAllResponse')
     .then(response => {
-      if(response) {
-        response.body.forEach(solver => {
-          cy.request({
-            method: 'DELETE',
-            url: `/solvers/${solver.id}`,
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-            }
-          })
-        });
-      }
+      Cypress.env('getAll', response);
+      return response;
     })
     .its('status')
     .should('eq', 200);
 })
+
+
+Cypress.Commands.add('deleteAll', ()=> {
+  const token = Cypress.env('token');
+  const all = Cypress.env('getAll');
+  if(all.body) {
+    all.body.forEach(solver => {
+      cy.request({
+        method: 'DELETE',
+        url: `/solvers/${solver.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .its('status')
+      .should('eq', 200);
+    });
+  }
+});
