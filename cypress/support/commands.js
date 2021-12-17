@@ -76,3 +76,31 @@ Cypress.Commands.add('getAT', () => {
     .its('status')
     .should('eq', 200);
 })
+
+Cypress.Commands.add("deleteAllSolvers", () => {
+    const token = Cypress.env('token');
+    cy.request({
+      method: 'GET',
+      url: '/solvers',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + Cypress.env('token')
+      },
+    })
+    .as('deleteResponse')
+    .then(response => {
+      response.body.forEach(solver => {
+        cy.request({
+          method: 'DELETE',
+          url: `/solvers/${solver.id}`,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + Cypress.env('token')
+          }
+        })
+      });
+      return response;
+    })
+    .its('status')
+    .should('eq', 200);
+})

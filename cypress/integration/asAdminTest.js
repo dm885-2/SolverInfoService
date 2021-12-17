@@ -9,34 +9,12 @@ describe('SolverInfoService as Admin', () => {
   });
 
   beforeEach(() => {
-    deleteAllSolvers();
+    cy.deleteAllSolvers();
   });
 
   after(() => {
-    deleteAllSolvers();
+    cy.deleteAllSolvers();
   });
-
-  function deleteAllSolvers() {
-    cy.request({
-      method: 'GET',
-      url: '/solvers',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Cypress.env('token')
-      },
-    }).then(response => {
-      response.body.forEach(solver => {
-        cy.request({
-          method: 'DELETE',
-          url: `/solvers/${solver.id}`,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + Cypress.env('token')
-          }
-        });
-      });
-    });
-  }
 
   it('should return empty list when getting solvers while no solvers were added.', () => {
     cy.request({
