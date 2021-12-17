@@ -10,7 +10,9 @@ describe('SolverInfoService as Admin', {
     const pass = 'p' + Date.now();
     cy.register(uname, pass, 1);
     cy.login(uname, pass);
+    cy.waitUntil(() => cy.getCookie('rtoken'));
     cy.getAT();
+    cy.waitUntil(() => cy.getCookie('token'));
   });
 
   beforeEach(() => {
