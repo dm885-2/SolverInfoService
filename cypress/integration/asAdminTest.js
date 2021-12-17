@@ -1,4 +1,9 @@
-describe('SolverInfoService as Admin', () => {
+describe('SolverInfoService as Admin', {
+  retries: {
+    runMode: 4,
+    openMode: 1,
+  }
+}, () => {
 
   before(() => {
     const uname = 'u' + Date.now();
