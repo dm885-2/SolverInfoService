@@ -22,7 +22,6 @@
 //
 //
 // -- This will overwrite an existing command --
-import 'cypress-wait-until';
 
 Cypress.Commands.add('register', (userName, password, rank) => {
   cy.request({
