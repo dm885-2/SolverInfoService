@@ -22,7 +22,7 @@
 //
 //
 // -- This will overwrite an existing command --
-Cypress.Commands.add('register', (userName, password, rank) => {
+Cypress.Commands.add('register', (userName, password) => {
   cy.request({
     method: 'POST',
     url: '/auth/register',
@@ -31,8 +31,7 @@ Cypress.Commands.add('register', (userName, password, rank) => {
     body: {
       'username': userName,
       'password': password,
-      'passwordRepeat': password,
-      'rank': rank
+      'passwordRepeat': password
     }
   })
     .as('registerResponse')
@@ -43,18 +42,18 @@ Cypress.Commands.add('register', (userName, password, rank) => {
     .should('eq', 200);
 });
 
-Cypress.Commands.add('login', (username, password) => {
+Cypress.Commands.add('login', (userName, password) => {
   cy.request({
     method: 'POST',
     url: '/auth/login',
     body: {
-      username: username,
+      username: userName,
       password: password
     }
   })
     .as('loginResponse')
     .then((response) => {
-      Cypress.env('rtoken', response.body.refreshToken); // either this or some global var but remember that this will only work in one test case
+      Cypress.env('rtoken', response.body.refreshToken);
       return response;
     })
     .its('status')
@@ -70,9 +69,9 @@ Cypress.Commands.add('getAccessToken', () => {
       refreshToken: token
     }
   })
-    .as('accessTokenResponse')
+    .as('loginResponse')
     .then((response) => {
-      Cypress.env('token', response.body.accessToken); // either this or some global var but remember that this will only work in one test case
+      Cypress.env('token', response.body.accessToken);
       return response;
     })
     .its('status')
