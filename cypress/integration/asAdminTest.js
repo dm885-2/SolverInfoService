@@ -8,17 +8,61 @@ describe('SolverInfoService as Admin', {
   before(() => {
     const uname = 'u' + Date.now();
     const pass = 'p' + Date.now();
-    cy.waitUntil(()=> cy.register(uname, pass, 1));
-    cy.waitUntil(()=> cy.login(uname, pass));
-    cy.waitUntil(()=> cy.getAT());
+    cy.register(uname, pass, 1);
+    cy.login(uname, pass);
+    cy.getAT();
   });
 
   beforeEach(() => {
-    cy.deleteAllSolvers();
+    cy.request({
+      method: 'GET',
+      url: '/solvers',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + Cypress.env('token')
+      },
+    })
+    .as('deleteResponse')
+    .then(response => {
+      response.body.forEach(solver => {
+        cy.request({
+          method: 'DELETE',
+          url: `/solvers/${solver.id}`,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + Cypress.env('token')
+          }
+        })
+      });
+    })
+    .its('status')
+    .should('eq', 200);
   });
 
   after(() => {
-    cy.deleteAllSolvers();
+    cy.request({
+      method: 'GET',
+      url: '/solvers',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + Cypress.env('token')
+      },
+    })
+    .as('deleteResponse')
+    .then(response => {
+      response.body.forEach(solver => {
+        cy.request({
+          method: 'DELETE',
+          url: `/solvers/${solver.id}`,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + Cypress.env('token')
+          }
+        })
+      });
+    })
+    .its('status')
+    .should('eq', 200);
   });
 
   it('should return empty list when getting solvers while no solvers were added.', () => {

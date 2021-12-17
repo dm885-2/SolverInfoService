@@ -1,4 +1,9 @@
-describe('SolverInfoService as Guest', () => {
+describe('SolverInfoService as Guest', {
+  retries: {
+    runMode: 4,
+    openMode: 1,
+  }
+}, () => {
 
   beforeEach(() => {
     // No user is created as we run the endpoints as non-authenticated guest.

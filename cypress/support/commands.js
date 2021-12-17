@@ -22,8 +22,6 @@
 //
 //
 // -- This will overwrite an existing command --
-import 'cypress-wait-until';
-
 Cypress.Commands.add('register', (userName, password, rank) => {
   cy.request({
       method:'POST', 
@@ -73,34 +71,6 @@ Cypress.Commands.add('getAT', () => {
     .as('atResponse')
     .then((response) => {
       Cypress.env('token', response.body.accessToken);
-      return response;
-    })
-    .its('status')
-    .should('eq', 200);
-})
-
-Cypress.Commands.add("deleteAllSolvers", () => {
-    const token = Cypress.env('token');
-    cy.request({
-      method: 'GET',
-      url: '/solvers',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Cypress.env('token')
-      },
-    })
-    .as('deleteResponse')
-    .then(response => {
-      response.body.forEach(solver => {
-        cy.request({
-          method: 'DELETE',
-          url: `/solvers/${solver.id}`,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + Cypress.env('token')
-          }
-        })
-      });
       return response;
     })
     .its('status')
