@@ -3,10 +3,7 @@ describe('SolverInfoService as Admin', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
     cy.getAT();
-    if(Cypress.env("tmp") == 1) {
-      cy.getAll();
-      cy.deleteAll();
-    }
+    cy.deleteAll();
   });
 
   it('should return empty list when getting solvers while no solvers were added.', () => {
@@ -21,7 +18,6 @@ describe('SolverInfoService as Admin', () => {
       expect(response.status).to.eq(200);
       expect(response.body.length).to.eq(0);
     });
-    Cypress.env("tmp", 1);
   });
 
   it('should return list with created solver when getting solvers after solver was added.', () => {
