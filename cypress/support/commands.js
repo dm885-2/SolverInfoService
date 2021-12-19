@@ -88,7 +88,7 @@ Cypress.Commands.add('deleteAll', ()=> {
     })
     .as('getAllResponse')
     .then(response => {
-      Cypress.env('getAll', response);
+      Cypress.env('getAll', response.body);
       return response;
     })
     .its('status')
@@ -98,8 +98,8 @@ Cypress.Commands.add('deleteAll', ()=> {
 Cypress.Commands.add('deleteAll', ()=> {
   const token = Cypress.env('token');
   const all = Cypress.env('getAll');
-  if(all.body) {
-    all.body.forEach(solver => {
+  if(all) {
+    all.forEach(solver => {
       cy.request({
         method: 'DELETE',
         url: `/solvers/${solver.id}`,
