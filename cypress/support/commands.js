@@ -76,7 +76,7 @@ cy.request({
   .should('eq', 200);
 })
 
-Cypress.Commands.add('deleteAll', ()=> {
+Cypress.Commands.add('getAll', ()=> {
     const token = Cypress.env('token');
     cy.request({
       method: 'GET',
@@ -88,7 +88,7 @@ Cypress.Commands.add('deleteAll', ()=> {
     })
     .as('getAllResponse')
     .then(response => {
-      Cypress.env('getAll', response.body);
+      Cypress.env('getAll', response);
       return response;
     })
     .its('status')
@@ -98,8 +98,8 @@ Cypress.Commands.add('deleteAll', ()=> {
 Cypress.Commands.add('deleteAll', ()=> {
   const token = Cypress.env('token');
   const all = Cypress.env('getAll');
-  if(all) {
-    all.forEach(solver => {
+  if(all.body) {
+    all.body.forEach(solver => {
       cy.request({
         method: 'DELETE',
         url: `/solvers/${solver.id}`,
