@@ -3,9 +3,10 @@ describe('SolverInfoService as Admin', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
     cy.getAT();
+    cy.getAll();
     cy.deleteAll();
   });
-
+  
   it('should return empty list when getting solvers while no solvers were added.', () => {
     cy.request({
       method: 'GET',

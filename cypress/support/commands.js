@@ -88,42 +88,28 @@ Cypress.Commands.add('deleteAll', ()=> {
     })
     .as('getAllResponse')
     .then(response => {
-      Cypress.env('getAll', response.body);
-
-      if(response.body) {
-        response.body.forEach(solver => {
-          cy.request({
-            method: 'DELETE',
-            url: `/solvers/${solver.id}`,
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-            }
-          })
-        });
-      }
+      Cypress.env('getAll', response);
       return response;
     })
     .its('status')
     .should('eq', 200);
 })
 
-
-// Cypress.Commands.add('deleteAll', ()=> {
-//   const token = Cypress.env('token');
-//   const all = Cypress.env('getAll');
-//   if(all) {
-//     all.forEach(solver => {
-//       cy.request({
-//         method: 'DELETE',
-//         url: `/solvers/${solver.id}`,
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'Authorization': 'Bearer ' + token
-//         }
-//       })
-//       .its('status')
-//       .should('eq', 200);
-//     });
-//   }
-// });
+Cypress.Commands.add('deleteAll', ()=> {
+  const token = Cypress.env('token');
+  const all = Cypress.env('getAll');
+  if(all.body) {
+    all.body.forEach(solver => {
+      cy.request({
+        method: 'DELETE',
+        url: `/solvers/${solver.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .its('status')
+      .should('eq', 200);
+    });
+  }
+});
