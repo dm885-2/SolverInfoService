@@ -3,6 +3,7 @@ describe('SolverInfoService as Admin', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
     cy.getAT();
+
     cy.getAll();
     cy.deleteAll();
   });
@@ -17,7 +18,7 @@ describe('SolverInfoService as Admin', () => {
       },
     }).then(response => {
       expect(response.status).to.eq(200);
-      expect(response.body.length).to.eq(0);
+      expect(response.body.data.length).to.eq(0);
     });
   });
 
@@ -46,9 +47,9 @@ describe('SolverInfoService as Admin', () => {
         },
       }).then(response => {
         expect(response.status).to.eq(200);
-        expect(response.body.length).to.eq(1);
-        expect(response.body[0].name).to.eq('foo');
-        expect(response.body[0].docker_image).to.eq('bar');
+        expect(response.body.data.length).to.eq(1);
+        expect(response.body.data[0].name).to.eq('foo');
+        expect(response.body.data[0].docker_image).to.eq('bar');
       });
     });
   });
@@ -95,7 +96,7 @@ describe('SolverInfoService as Admin', () => {
           'Authorization': 'Bearer ' + Cypress.env('token')
         },
       }).then(response => {
-        response.body.forEach(solver => {
+        response.body.data.forEach(solver => {
 
           // And now test if we can update the solver.
           cy.request({
@@ -126,9 +127,9 @@ describe('SolverInfoService as Admin', () => {
           },
         }).then(response => {
           expect(response.status).to.eq(200);
-          expect(response.body.length).to.eq(1);
-          expect(response.body[0].name).to.eq('newFoo');
-          expect(response.body[0].docker_image).to.eq('newBar');
+          expect(response.body.data.length).to.eq(1);
+          expect(response.body.data[0].name).to.eq('newFoo');
+          expect(response.body.data[0].docker_image).to.eq('newBar');
         });
       });
     });
@@ -158,7 +159,7 @@ describe('SolverInfoService as Admin', () => {
           'Authorization': 'Bearer ' + Cypress.env('token')
         },
       }).then(response => {
-        response.body.forEach(solver => {
+        response.body.data.forEach(solver => {
 
           // And now test if we can delete the solver.
           cy.request({
@@ -185,35 +186,9 @@ describe('SolverInfoService as Admin', () => {
           },
         }).then(response => {
           expect(response.status).to.eq(200);
-          expect(response.body.length).to.eq(0);
+          expect(response.body.data.length).to.eq(0);
         });
       });
     });
   });
 });
-
-  // after(() => {
-  //   cy.request({
-  //     method: 'GET',
-  //     url: '/solvers',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer ' + Cypress.env('token')
-  //     },
-  //   })
-  //   .as('deleteResponse')
-  //   .then(response => {
-  //     response.body.forEach(solver => {
-  //       cy.request({
-  //         method: 'DELETE',
-  //         url: `/solvers/${solver.id}`,
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'Authorization': 'Bearer ' + Cypress.env('token')
-  //         }
-  //       })
-  //     });
-  //   })
-  //   .its('status')
-  //   .should('eq', 200);
-  // });

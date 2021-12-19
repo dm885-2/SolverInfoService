@@ -98,18 +98,19 @@ Cypress.Commands.add('getAll', ()=> {
 Cypress.Commands.add('deleteAll', ()=> {
   const token = Cypress.env('token');
   const all = Cypress.env('getAll');
+
   if(all.body) {
-    all.body.forEach(solver => {
-      cy.request({
-        method: 'DELETE',
-        url: `/solvers/${solver.id}`,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      })
-      .its('status')
-      .should('eq', 200);
-    });
+      all.body.data.forEach(solver => {
+        cy.request({
+          method: 'DELETE',
+          url: `/solvers/${solver.id}`,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .its('status')
+        .should('eq', 200);
+      });
   }
 });
