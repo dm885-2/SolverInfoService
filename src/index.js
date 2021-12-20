@@ -4,10 +4,8 @@ export async function listSolvers(msg, publish) {
   const solvers = await helpers.query('SELECT * FROM `solvers` WHERE `deleted` = ?;', [false]);
 
   publish('list-solvers-response', {
-    solvers: solvers,
-    sessionId: msg.sessionId,
-    requestId: msg.requestId
-  })
+    solvers: solvers
+  });
 }
 
 export async function addSolver(msg, publish) {
@@ -24,9 +22,7 @@ export async function addSolver(msg, publish) {
     ]);
 
     publish('add-solver-response', {
-      error: !stmt,
-      sessionId: msg.sessionId,
-      requestId: msg.requestId
+      error: !stmt
     });
   } else {
     // We cannot reuse a previously disabled solver, so create a new one.
@@ -38,9 +34,7 @@ export async function addSolver(msg, publish) {
     ]);
 
     publish('add-solver-response', {
-      error: !stmt,
-      sessionId: msg.sessionId,
-      requestId: msg.requestId
+      error: !stmt
     });
   }
 }
@@ -51,9 +45,7 @@ export async function deleteSolver(msg, publish) {
   ]);
 
   publish('delete-solver-response', {
-    error: !stmt,
-    sessionId: msg.sessionId,
-    requestId: msg.requestId
+    error: !stmt
   });
 }
 
@@ -65,9 +57,7 @@ export async function updateSolver(msg, publish) {
   ]);
 
   publish('update-solver-response', {
-    error: !stmt,
-    sessionId: msg.sessionId,
-    requestId: msg.requestId
+    error: !stmt
   });
 }
 
