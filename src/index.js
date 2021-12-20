@@ -1,6 +1,7 @@
 import helpers from './helpers.js';
 
 export async function listSolvers(msg, publish) {
+  console.log("Should list!!");
   const solvers = await helpers.query('SELECT * FROM `solvers` WHERE `deleted` = ?;', [false]);
 
   publish('list-solvers-response', {
@@ -38,14 +39,15 @@ export async function addSolver(msg, publish) {
     });
   }
 }
-setImmediate(() => { // Add default solvers
-  const dummyPublish = () => {};
+// setImmediate(async () => { // Add default solvers
+//   const dummyPublish = () => {};
+  
 
-  addSolver({
-    name: "gecode",
-    docker_image: "minizinc/minizinc",
-  }, dummyPublish);
-});
+//   addSolver({
+//     name: "gecode",
+//     docker_image: "minizinc/minizinc",
+//   }, dummyPublish);
+// });
 
 export async function deleteSolver(msg, publish) {
   const stmt = await helpers.query('UPDATE `solvers` SET `deleted` = 1 WHERE `id` = ?', [
