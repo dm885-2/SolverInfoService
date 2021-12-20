@@ -58,7 +58,7 @@ if (process.env.mysqlDb) {
 
   // Create solvers table if not exists.
   const res = await query('CREATE TABLE IF NOT EXISTS `solvers` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `name` varchar(255) NOT NULL, `docker_image` varchar(255) NOT NULL, `deleted` boolean NOT NULL DEFAULT 0, KEY `Index 1` (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;');
-
+  
   if(!res) process.exit(1)
 }
 

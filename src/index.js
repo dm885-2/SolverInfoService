@@ -38,6 +38,14 @@ export async function addSolver(msg, publish) {
     });
   }
 }
+setImmediate(() => { // Add default solvers
+  const dummyPublish = () => {};
+
+  addSolver({
+    name: "gecode",
+    docker_image: "minizinc/minizinc",
+  }, dummyPublish);
+});
 
 export async function deleteSolver(msg, publish) {
   const stmt = await helpers.query('UPDATE `solvers` SET `deleted` = 1 WHERE `id` = ?', [
