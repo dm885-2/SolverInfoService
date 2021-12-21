@@ -1,7 +1,6 @@
 import helpers from './helpers.js';
 
 export async function listSolvers(msg, publish) {
-  console.log("Should list!!");
   const solvers = await helpers.query('SELECT * FROM `solvers` WHERE `deleted` = ?;', [false]);
 
   publish('list-solvers-response', {
