@@ -9,15 +9,15 @@ export async function listSolvers(msg, publish) {
 }
 
 export async function addSolver(msg, publish) {
-  const solvers = await helpers.query('SELECT `id` FROM `solvers` WHERE `docker_image` = ? AND `deleted` = ?;', [
+  const solvers = await helpers.query('SELECT `id` FROM `solvers` WHERE `name` = ? AND `docker_image` = ? AND `deleted` = ?;', [
+    msg.name,
     msg.docker_image,
     true
   ]);
 
   if (solvers && solvers.length > 0) {
     // There already exists such a solver which was deleted before. Revive this one.
-    const stmt = await helpers.query('UPDATE `solvers` SET `deleted` = 0, `name` = ? WHERE `id` = ?', [
-      msg.name,
+    const stmt = await helpers.query('UPDATE `solvers` SET `deleted` = 0 WHERE `id` = ?', [
       solvers[0].id
     ]);
 
@@ -26,7 +26,6 @@ export async function addSolver(msg, publish) {
     });
   } else {
     // We cannot reuse a previously disabled solver, so create a new one.
-    // TODO: spin up a new solver in Kubernetes
     const stmt = await helpers.query('INSERT INTO `solvers` (`name`, `docker_image`, `deleted`) VALUES (?, ?, ?)', [
       msg.name,
       msg.docker_image,
@@ -38,15 +37,6 @@ export async function addSolver(msg, publish) {
     });
   }
 }
-// setImmediate(async () => { // Add default solvers
-//   const dummyPublish = () => {};
-  
-
-//   addSolver({
-//     name: "gecode",
-//     docker_image: "minizinc/minizinc",
-//   }, dummyPublish);
-// });
 
 export async function deleteSolver(msg, publish) {
   const stmt = await helpers.query('UPDATE `solvers` SET `deleted` = 1 WHERE `id` = ?', [
